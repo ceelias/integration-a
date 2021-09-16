@@ -5,7 +5,7 @@ import {
 
 import { createAPIClient } from '../../client';
 import { IntegrationConfig } from '../../config';
-import { Entities, Steps } from '../constants';
+import { Entities, MappedRelationships, Steps } from '../constants';
 import {
   createFindingScansHostRelationship,
   createFindingEntity,
@@ -21,7 +21,7 @@ export async function fetchFindings({
     const findingEntity = await jobState.addEntity(
       createFindingEntity(finding),
     );
-    await jobState.addRelationship(
+    await jobState.addMappedRelationship(
       createFindingScansHostRelationship(findingEntity, finding.host),
     );
   });
@@ -33,6 +33,7 @@ export const findingSteps: IntegrationStep<IntegrationConfig>[] = [
     name: 'Fetch Findings',
     entities: [Entities.FINDING],
     relationships: [],
+    mappedRelationships: [MappedRelationships.FINDING_SCANS_HOST],
     dependsOn: [],
     executionHandler: fetchFindings,
   },

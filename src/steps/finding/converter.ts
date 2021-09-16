@@ -3,19 +3,19 @@ import {
   createMappedRelationship,
   Entity,
   RelationshipClass,
-  Relationship,
   RelationshipDirection,
   generateRelationshipType,
   TargetEntityProperties,
+  MappedRelationship,
 } from '@jupiterone/integration-sdk-core';
 
-import { Entities } from '../constants';
+import { Entities, MappedRelationships, TargetEntities } from '../constants';
 import { AcmeFinding } from '../../types';
 
 export const MAPPED_RELATIONSHIP_TYPE_FINDING_HOST = generateRelationshipType(
   RelationshipClass.SCANS,
-  'acme_finding',
-  'acme_host',
+  Entities.FINDING._type,
+  TargetEntities.HOST._type,
 );
 
 export function createFindingEntity(finding: AcmeFinding): Entity {
@@ -48,11 +48,11 @@ export function createFindingEntity(finding: AcmeFinding): Entity {
 export function createFindingScansHostRelationship(
   findingEntity: Entity,
   host: string,
-): Relationship {
+): MappedRelationship {
   return createMappedRelationship({
     _class: RelationshipClass.SCANS,
     // TODO require _type https://github.com/JupiterOne/sdk/issues/347
-    _type: 'FINDING_SCANS_HOST',
+    _type: MappedRelationships.FINDING_SCANS_HOST._type,
     _mapping: {
       sourceEntityKey: findingEntity._key,
       relationshipDirection: RelationshipDirection.FORWARD,
@@ -74,8 +74,8 @@ export function createFindingScansHostRelationship(
 
 export function createHostTargetEntity(host: string) {
   const hostEntity: TargetEntityProperties = {
-    _class: ['Host'],
-    _type: 'acme_host',
+    _class: TargetEntities.HOST._class,
+    _type: TargetEntities.HOST._type,
     _key: 'acme_host:' + host,
     id: host,
     hostName: host,
