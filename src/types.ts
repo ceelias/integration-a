@@ -1,14 +1,9 @@
 // Providers often supply types with their API libraries.
 
-export interface AcmeUser {
+export interface AcmeFinding {
   id: string;
   name: string;
-}
-
-export interface AcmeGroup {
-  id: string;
-  name: string;
-  users?: Pick<AcmeUser, 'id'>[];
+  host: string;
 }
 
 // Those can be useful to a degree, but often they're just full of optional
